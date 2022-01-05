@@ -8,11 +8,13 @@ import React, { useEffect, useMemo, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {
+  StableSwap,
   StableSwapLayout,
   SWAP_PROGRAM_ID as STABLE_SWAP_PROGRAM_ID,
 } from "@saberhq/stableswap-sdk";
 import Wallet from "@project-serum/sol-wallet-adapter"
 
+<<<<<<< HEAD
 import { AccountMeta, clusterApiUrl, Connection, PublicKey, SYSVAR_CLOCK_PUBKEY } from '@solana/web3.js';
 import { u64 } from '@solana/spl-token';
 
@@ -126,6 +128,9 @@ export class SaberStableSwapInfo {
 }
 
 
+=======
+import { AccountMeta, clusterApiUrl, Connection, PublicKey, Signer, SYSVAR_CLOCK_PUBKEY, TransactionInstruction } from '@solana/web3.js';
+>>>>>>> 4426c80 (refs / leads)
 
 
 function App() {
@@ -162,6 +167,7 @@ function App() {
   }, [selectedWallet]);
 
 
+<<<<<<< HEAD
   // execute swap ( one to one)
   async function swap(
     {
@@ -251,6 +257,8 @@ function App() {
     }
   }
 
+=======
+>>>>>>> 4426c80 (refs / leads)
 
   return (
     <div className="App">
