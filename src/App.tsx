@@ -1,3 +1,9 @@
+
+
+// MintA (USDC - sol devnet) = 2tWC4JAdL4AxEFJySziYJfsAnW2MHKRo98vbAPiRDSk8
+// MintB (Test USD - sol devnet) = 4QgnWUPQmfGB5dTDCcc4ZFeZDK7xNVhCUFoNmmYFwAme
+// find out what OneSolprotocol is to the stable swap instr
+
 import React, { useEffect, useMemo, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -27,6 +33,7 @@ export async function loadAccount(
   return Buffer.from(accountInfo.data);
 }
 
+// only info, no transactions
 async function loadSaberStableSwap(
   {
     connection,
@@ -71,7 +78,7 @@ async function loadSaberStableSwap(
   );
 }
 
-
+// to move in utils
 export class SaberStableSwapInfo {
   constructor(
     private programId: PublicKey,
@@ -155,7 +162,7 @@ function App() {
   }, [selectedWallet]);
 
 
-
+  // execute swap ( one to one)
   async function swap(
     {
       onesolProtocol,
