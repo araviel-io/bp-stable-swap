@@ -14,7 +14,6 @@ import {
 } from "@saberhq/stableswap-sdk";
 import Wallet from "@project-serum/sol-wallet-adapter"
 
-<<<<<<< HEAD
 import { AccountMeta, clusterApiUrl, Connection, PublicKey, SYSVAR_CLOCK_PUBKEY } from '@solana/web3.js';
 import { u64 } from '@solana/spl-token';
 
@@ -128,9 +127,6 @@ export class SaberStableSwapInfo {
 }
 
 
-=======
-import { AccountMeta, clusterApiUrl, Connection, PublicKey, Signer, SYSVAR_CLOCK_PUBKEY, TransactionInstruction } from '@solana/web3.js';
->>>>>>> 4426c80 (refs / leads)
 
 
 function App() {
@@ -166,99 +162,6 @@ function App() {
     }
   }, [selectedWallet]);
 
-
-<<<<<<< HEAD
-  // execute swap ( one to one)
-  async function swap(
-    {
-      onesolProtocol,
-      connection,
-      fromMintKey,
-      toMintKey,
-      fromAccount,
-      toAccount,
-      route,
-      slippage,
-      instructions,
-      signers,
-      userTransferAuthority,
-      feeTokenAccount,
-      openOrders
-    }:
-      {
-        onesolProtocol: OneSolProtocol,
-        connection: Connection,
-        wallet: any,
-        fromMintKey: PublicKey,
-        toMintKey: PublicKey,
-        fromAccount: PublicKey,
-        toAccount: PublicKey,
-        route: DistributionRoute,
-        slippage: number,
-        instructions: TransactionInstruction[],
-        signers: Signer[],
-        userTransferAuthority: PublicKey,
-        feeTokenAccount: PublicKey,
-        openOrders?: PublicKey
-      },
-  ) {
-    const {
-      exchanger_flag,
-      pubkey,
-      program_id,
-      amount_in,
-      amount_out,
-    } = route
-  
-    const amountIn = new u64(amount_in)
-    const expectAmountOut = new u64(amount_out)
-    const minimumAmountOut = new u64(amount_out * (1 - slippage))
-  
-    if ([EXCHANGER_SPL_TOKEN_SWAP, EXCHANGER_ORCA_SWAP, EXCHANGER_ONEMOON].includes(exchanger_flag)) {
-      const splTokenSwapInfo = await loadTokenSwapInfo(
-        connection,
-        new PublicKey(pubkey),
-        new PublicKey(program_id),
-        null
-      )
-  
-      await onesolProtocol.createSwapByTokenSwapInstruction({
-        fromTokenAccountKey: fromAccount,
-        toTokenAccountKey: toAccount,
-        fromMintKey,
-        toMintKey,
-        userTransferAuthority,
-        feeTokenAccount,
-        amountIn,
-        expectAmountOut,
-        minimumAmountOut,
-        splTokenSwapInfo,
-      }, instructions, signers)
-    
-    } else if (exchanger_flag === EXCHANGER_SABER_STABLE_SWAP) {
-      const stableSwapInfo = await loadSaberStableSwap({
-        connection,
-        address: new PublicKey(pubkey),
-        programId: new PublicKey(program_id)
-      })
-      // 1sol-interface\src\utils\pools.tsx l600
-      await onesolProtocol.createSwapBySaberStableSwapInstruction({
-        fromTokenAccountKey: fromAccount,
-        toTokenAccountKey: toAccount,
-        fromMintKey,
-        toMintKey,
-        userTransferAuthority,
-        feeTokenAccount,
-        amountIn,
-        expectAmountOut,
-        minimumAmountOut,
-        stableSwapInfo,
-      }, instructions, signers)
-    }
-  }
-
-=======
->>>>>>> 4426c80 (refs / leads)
 
   return (
     <div className="App">
