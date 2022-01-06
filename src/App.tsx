@@ -1,130 +1,23 @@
 
-
 // MintA (USDC - sol devnet) = 2tWC4JAdL4AxEFJySziYJfsAnW2MHKRo98vbAPiRDSk8
 // MintB (Test USD - sol devnet) = 4QgnWUPQmfGB5dTDCcc4ZFeZDK7xNVhCUFoNmmYFwAme
 // find out what OneSolprotocol is to the stable swap instr
 
 import React, { useEffect, useMemo, useState } from 'react';
 import logo from './logo.svg';
-import './App.css';
-import {
-  StableSwap,
-  StableSwapLayout,
-  SWAP_PROGRAM_ID as STABLE_SWAP_PROGRAM_ID,
-} from "@saberhq/stableswap-sdk";
-import Wallet from "@project-serum/sol-wallet-adapter"
 
 import { AccountMeta, clusterApiUrl, Connection, PublicKey, SYSVAR_CLOCK_PUBKEY } from '@solana/web3.js';
 import { u64 } from '@solana/spl-token';
+import './App.css';
+/*import {
+  StableSwap,
+  StableSwapLayout,
+  SWAP_PROGRAM_ID as STABLE_SWAP_PROGRAM_ID,
+} from "@saberhq/stableswap-sdk";*/
+import Wallet from "@project-serum/sol-wallet-adapter"
 
-export async function loadAccount(
-  connection: Connection,
-  address: PublicKey,
-  programId: PublicKey
-): Promise<Buffer> {
-  const accountInfo = await connection.getAccountInfo(address);
-  if (accountInfo === null) {
-    throw new Error("Failed to find account");
-  }
 
-  if (!accountInfo.owner.equals(programId)) {
-    throw new Error(`Invalid owner: ${JSON.stringify(accountInfo.owner.toBase58())}`);
-  }
-
-  return Buffer.from(accountInfo.data);
-}
-
-// only info, no transactions
-async function loadSaberStableSwap(
-  {
-    connection,
-    address,
-    programId = STABLE_SWAP_PROGRAM_ID,
-  }: {
-    connection: Connection;
-    address: PublicKey,
-    programId: PublicKey,
-  }
-): Promise<SaberStableSwapInfo> {
-
-  const data = await loadAccount(connection, address, programId);
-  const stableSwapData = StableSwapLayout.decode(data);
-
-  if (!stableSwapData.isInitialized || stableSwapData.isPaused) {
-    throw new Error(`Invalid token swap state`);
-  }
-
-  const authority = await PublicKey.createProgramAddress(
-    [address.toBuffer()].concat(Buffer.from([stableSwapData.nonce])),
-    programId
-  );
-
-  const tokenAccountA = new PublicKey(stableSwapData.tokenAccountA);
-  const mintA = new PublicKey(stableSwapData.mintA);
-  const adminFeeAccountA = new PublicKey(stableSwapData.adminFeeAccountA);
-  const tokenAccountB = new PublicKey(stableSwapData.tokenAccountB);
-  const mintB = new PublicKey(stableSwapData.mintB);
-  const adminFeeAccountB = new PublicKey(stableSwapData.adminFeeAccountB);
-
-  return new SaberStableSwapInfo(
-    programId,
-    address,
-    authority,
-    tokenAccountA,
-    mintA,
-    adminFeeAccountA,
-    tokenAccountB,
-    mintB,
-    adminFeeAccountB
-  );
-}
-
-// to move in utils
-export class SaberStableSwapInfo {
-  constructor(
-    private programId: PublicKey,
-    private swapInfo: PublicKey,
-    private authority: PublicKey,
-    private tokenAccountA: PublicKey,
-    private mintA: PublicKey,
-    private adminFeeAccountA: PublicKey,
-    private tokenAccountB: PublicKey,
-    private mintB: PublicKey,
-    private adminFeeAccountB: PublicKey,
-  ) {
-    this.programId = programId;
-    this.swapInfo = swapInfo;
-    this.authority = authority;
-    this.tokenAccountA = tokenAccountA;
-    this.tokenAccountB = tokenAccountB;
-    this.adminFeeAccountA = adminFeeAccountA;
-    this.adminFeeAccountB = adminFeeAccountB;
-  }
-
-  toKeys(sourceMint: PublicKey): Array<AccountMeta> {
-    const keys = [
-      { pubkey: this.swapInfo, isSigner: false, isWritable: false },
-      { pubkey: this.authority, isSigner: false, isWritable: false },
-      { pubkey: this.tokenAccountA, isSigner: false, isWritable: true },
-      { pubkey: this.tokenAccountB, isSigner: false, isWritable: true },
-    ];
-
-    if (sourceMint.equals(this.mintA)) {
-      keys.push(
-        { pubkey: this.adminFeeAccountB, isSigner: false, isWritable: true },
-      );
-    } else {
-      keys.push(
-        { pubkey: this.adminFeeAccountA, isSigner: false, isWritable: true },
-      );
-    }
-    keys.push(
-      { pubkey: SYSVAR_CLOCK_PUBKEY, isSigner: false, isWritable: false },
-      { pubkey: this.programId, isSigner: false, isWritable: false },
-    );
-    return keys;
-  }
-}
+import { StableSwap } from "./lib/stable-swap";
 
 
 
@@ -161,6 +54,43 @@ function App() {
       };
     }
   }, [selectedWallet]);
+/*
+  async function askNewSwap() {
+    const newSwap = await StableSwap.createStableSwap(
+      connection,
+      payer,
+      stableSwapAccount,
+      authority,
+      owner.publicKey,
+      adminAccountA,
+      adminAccountB,
+      mintA.publicKey,
+      tokenAccountA,
+      mintB.publicKey,
+      tokenAccountB,
+      tokenPool.publicKey,
+      userPoolAccount,
+      mintA.publicKey,
+      mintB.publicKey,
+      stableSwapProgramId,
+      TOKEN_PROGRAM_ID,
+      nonce,
+      AMP_FACTOR
+    );
+
+    console.log("Payer KP: ", payer.secretKey.toString());
+    console.log("Owner KP: ", owner.secretKey.toString());
+    console.log("MintA: ", mintA.publicKey.toString());
+    console.log("MintB: ", mintB.publicKey.toString());
+    console.log("FeeAccountA: ", newSwap.adminFeeAccountA.toString());
+    console.log("FeeAccountB: ", newSwap.adminFeeAccountB.toString());
+    console.log("Address: ", newSwap.stableSwap.toString());
+    console.log("ProgramID: ", newSwap.swapProgramId.toString());
+  }
+
+*/
+
+
 
 
   return (
