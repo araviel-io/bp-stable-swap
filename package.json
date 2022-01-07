@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@saberhq/stableswap-sdk": "^1.5.2",
     "@project-serum/sol-wallet-adapter": "^0.2.5",
+    "@saberhq/stableswap-sdk": "^1.5.2",
     "@solana/spl-token": "0.1.8",
     "@solana/spl-token-registry": "^0.2.246",
     "@solana/spl-token-swap": "0.1.2",
@@ -16,6 +16,7 @@
     "@types/node": "^16.11.18",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
+    "jest": "^27.4.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
@@ -23,9 +24,11 @@
     "web-vitals": "^2.1.2"
   },
   "scripts": {
+    
+    "test-int": "jest e2e.int.test.ts --force-exit --testTimeout=10000",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
